@@ -18,7 +18,7 @@
 AC_PREREQ([2.69])
 AC_INIT([GNU Automake], [1.13], [bug-automake@gnu.org])
 
-AC_CONFIG_SRCDIR([automake.in])
+AC_CONFIG_SRCDIR([amplain.in])
 AC_CONFIG_AUX_DIR([lib])
 
 AM_SILENT_RULES([yes])
@@ -68,7 +68,7 @@ AC_SUBST([system_acdir], ["\${datadir}/aclocal"])
 # as well.  The extra quoting is to cater to cases when the build
 # directory contains whitespace or shell metacharacters.
 ACLOCAL="\"`pwd`/t/wrap/aclocal-$APIVERSION\""
-AUTOMAKE="\"`pwd`/t/wrap/automake-$APIVERSION\""
+AUTOMAKE="\"`pwd`/t/wrap/amplain-$APIVERSION\""
 
 AC_PROG_LN_S
 
@@ -610,8 +610,8 @@ AC_CONFIG_LINKS([GNUmakefile:GNUmakefile])
 AC_CONFIG_FILES([t/wrap/aclocal-${APIVERSION}:t/wrap/aclocal.in],
                 [chmod +x t/wrap/aclocal-${APIVERSION}],
                 [APIVERSION=$APIVERSION])
-AC_CONFIG_FILES([t/wrap/automake-${APIVERSION}:t/wrap/automake.in],
-                [chmod +x t/wrap/automake-${APIVERSION}],
+AC_CONFIG_FILES([t/wrap/amplain-${APIVERSION}:t/wrap/amplain.in],
+                [chmod +x t/wrap/amplain-${APIVERSION}],
                 [APIVERSION=$APIVERSION])
 
 AC_OUTPUT

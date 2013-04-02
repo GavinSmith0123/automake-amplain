@@ -58,10 +58,10 @@ generated_file_finalize = $(AM_V_at) \
   fi; \
   chmod a-w $@-t && mv -f $@-t $@
 
-bin_SCRIPTS = automake aclocal
+bin_SCRIPTS = amplain aclocal
 
 CLEANFILES += $(bin_SCRIPTS)
-AUTOMAKESOURCES = automake.in aclocal.in
+AUTOMAKESOURCES = amplain.in aclocal.in
 
 TAGS_FILES = $(AUTOMAKESOURCES)
 
@@ -95,9 +95,9 @@ uninstall-hook:
 
 # These files depend on Makefile so they are rebuilt if $(VERSION),
 # $(datadir) or other do_subst'ituted variables change.
-automake: automake.in
+amplain: amplain.in
 aclocal: aclocal.in
-automake aclocal: Makefile
+amplain aclocal: Makefile
 	$(AM_V_at)rm -f $@ $@-t
 	$(AM_V_GEN)in=$@.in; $(do_subst) <$(srcdir)/$@.in >$@-t
 ## We can't use '$(generated_file_finalize)' here, because currently
@@ -295,8 +295,8 @@ dist_automake_ac_DATA = \
   m4/upc.m4 \
   m4/vala.m4
 
-automake_internal_acdir = $(automake_acdir)/internal
-dist_automake_internal_ac_DATA = m4/internal/ac-config-macro-dirs.m4
+amplain_internal_acdir = $(automake_acdir)/internal
+dist_amplain_internal_ac_DATA = m4/internal/ac-config-macro-dirs.m4
 
 dist_system_ac_DATA = m4/acdir/README
 
@@ -410,7 +410,7 @@ EXTRA_DIST += $(contrib_TESTS)
 
 nodist_noinst_SCRIPTS = \
   t/wrap/aclocal-$(APIVERSION) \
-  t/wrap/automake-$(APIVERSION)
+  t/wrap/amplain-$(APIVERSION)
 
 dist_noinst_DATA = \
   t/ax/test-init.sh \
@@ -586,8 +586,8 @@ doc/aclocal.1 doc/automake.1:
 
 doc/aclocal-$(APIVERSION).1: aclocal.in aclocal lib/Automake/Config.pm
 	$(update_mans) aclocal-$(APIVERSION)
-doc/automake-$(APIVERSION).1: automake.in automake lib/Automake/Config.pm
-	$(update_mans) automake-$(APIVERSION)
+doc/automake-$(APIVERSION).1: amplain.in amplain lib/Automake/Config.pm
+	$(update_mans) amplain-$(APIVERSION)
 
 
 ## ---------------------------- ##
@@ -625,7 +625,7 @@ $(srcdir)/doc/amhello-1.0.tar.gz: $(amhello_sources) $(srcdir)/configure.ac
 	  && export PATH \
 	  && $(am__cd) $(srcdir)/doc/amhello \
 	  && ACLOCAL=aclocal-$(APIVERSION) && export ACLOCAL \
-	  && AUTOMAKE=automake-$(APIVERSION) && export AUTOMAKE \
+	  && AUTOMAKE=amplain-$(APIVERSION) && export AUTOMAKE \
 	  && AUTOCONF='$(am_AUTOCONF)' && export AUTOCONF \
 	  && AUTOM4TE='$(am_AUTOM4TE)' && export AUTOM4TE \
 	  && AUTORECONF='$(am_AUTORECONF)' && export AUTORECONF \
