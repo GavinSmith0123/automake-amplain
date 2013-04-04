@@ -307,6 +307,9 @@ my $copy_missing = 0;
 # TRUE if we should always update files that we know about.
 my $force_missing = 0;
 
+# Generate plain Makefiles
+my $plain = 0;
+
 
 ## ---------------------------------------- ##
 ## Variables filled during files scanning.  ##
@@ -8114,6 +8117,7 @@ sub parse_arguments ()
      'c|copy'		=> \$copy_missing,
      'v|verbose'	=> sub { setup_channel 'verb', silent => 0; },
      'W|warnings=s'     => \@warnings,
+     'plain'		=> sub { $plain = 1; },
      );
 
   use Automake::Getopt ();
