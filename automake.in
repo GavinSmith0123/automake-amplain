@@ -1557,8 +1557,14 @@ sub handle_languages
 	define_linker_variable ($lang)
 	  if ($lang->link);
 
-	require_variables ("$am_file.am", $lang->Name . " source seen",
-			   TRUE, @{$lang->config_vars});
+	# If generating plain Makefiles, config_vars (e.g. CC) are
+	# not being set in the generated Makefile.in, so this doesn't
+	# check whether they are being set or not.
+	# Maybe we could scan config.mk for them.
+	if (! $plain) {
+	  require_variables ("$am_file.am", $lang->Name . " source seen",
+	      		   TRUE, @{$lang->config_vars});
+	}
 
 	# Call the finisher.
 	$lang->finish;
@@ -6610,11 +6616,14 @@ sub define_standard_variables
     file_contents_internal (1, "$libdir/am/header-vars.am",
 			    new Automake::Location);
 
-  foreach my $var (sort keys %configure_vars)
+  # If generating plain Makefiles, do not output template definitons
+  # of configure variable. These will be set in "config.mk"
+  if (! $plain) {
+    foreach my $var (sort keys %configure_vars)
     {
       &define_configure_variable ($var);
     }
-
+  }
   $output_vars .= $comments . $rules;
 }
 
@@ -7918,6 +7927,21 @@ sub generate_makefile ($$)
 
   # Comes last, because all the above procedures may have
   # defined or overridden variables.
+  if ($plain)
+    {
+      # Precede list of variables with "config.mk" include
+
+      $output_vars .= 'ERR_CONFIG_MK= $(error config.mk not found. ' .
+	      'Please run configure first.)' . "\n" .
+              'config.mk: ; $(ERR_CONFIG_MK)' . "\n";
+      $output_vars .= 'include config.mk' . "\n";
+
+      # The followind doesn't work because include is interpreted as an
+      # automake include, not a make include
+      
+      # $output_vars .= &file_contents ('config-mk',
+      #				       new Automake::Location,);
+    }
   $output_vars .= output_variables;
 
   check_typos;
