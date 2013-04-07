@@ -7936,6 +7936,13 @@ sub generate_makefile ($$)
               'config.mk: ; $(ERR_CONFIG_MK)' . "\n";
       $output_vars .= 'include config.mk' . "\n";
 
+      # DEPDIR is required to find *.Po includes
+      # Otherwise, if config.mk is not there, we will not get the error
+      # messages we want
+      # FIXME: We should avoid defining DEPDIR in AX_CONFIG_INCLUDE
+      $output_vars .= 'DEPDIR = .deps'  . "\n";
+
+
       # The followind doesn't work because include is interpreted as an
       # automake include, not a make include
       
