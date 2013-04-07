@@ -7943,6 +7943,11 @@ sub generate_makefile ($$)
       $output_vars .= 'DEPDIR = .deps'  . "\n";
 
 
+      # "config.mk" will otherwise become the default target
+      # This is a GNU extension
+      $output_vars .= '.DEFAULT_GOAL := all' . "\n";
+
+
       # The followind doesn't work because include is interpreted as an
       # automake include, not a make include
       
