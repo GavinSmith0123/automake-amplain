@@ -184,6 +184,5 @@ fi
 AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
 AC_SUBST([AMDEPBACKSLASH])dnl
 _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
-AC_SUBST([am__nodep])dnl
-_AM_SUBST_NOTMAKE([am__nodep])dnl
+AC_SUBST([am__nodep])
 ])

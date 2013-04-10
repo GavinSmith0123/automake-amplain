@@ -1174,7 +1174,7 @@ sub verbose_flag ($)
 sub verbose_nodep_flag ($)
 {
     my ($name) = @_;
-    return '$(' . verbose_var ($name) . subst ('am__nodep') . ')';
+    return '$(' . verbose_var ($name) . '$(am__nodep)' . ')';
 }
 
 # silent_flag
