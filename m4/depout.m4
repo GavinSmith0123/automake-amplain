@@ -42,6 +42,11 @@ AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
     am__include=`sed -n 's/^am__include = //p' < "$mf"`
     test -z "am__include" && continue
     am__quote=`sed -n 's/^am__quote = //p' < "$mf"`
+
+    # Default values in case Makefile.in was generated with --plain
+    test -n "$am__include" || am__include=include
+    test -n "$am__quote" || am__quote=''
+
     # Find all dependency output files, they are included files with
     # $(DEPDIR) in their names.  We invoke sed twice because it is the
     # simplest approach to changing $(DEPDIR) to its actual value in the
