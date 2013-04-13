@@ -176,11 +176,17 @@ AS_HELP_STRING(
 AS_HELP_STRING(
   [--disable-dependency-tracking],
   [speeds up one-time build])])
+am__AMDEP_TRUE='@: '
+am__AMDEP_FALSE=''
 if test "x$enable_dependency_tracking" != xno; then
   am_depcomp="$ac_aux_dir/depcomp"
   AMDEPBACKSLASH='\'
   am__nodep='_no'
+  am__AMDEP_TRUE=''
+  am__AMDEP_FALSE='@: '
 fi
+AC_SUBST([am__AMDEP_TRUE])
+AC_SUBST([am__AMDEP_FALSE])
 AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
 AC_SUBST([AMDEPBACKSLASH])dnl
 _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl

@@ -69,6 +69,8 @@ if %FASTDEP%
 ?GENERIC??SUBDIROBJ?	%VERBOSE%depbase=`echo %OBJ% | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
 ?GENERIC??SUBDIROBJ?	%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%SOURCE% &&\
 ?GENERIC??SUBDIROBJ?	$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
+	$(am__AMDEP_TRUE)@echo plain mode with dependencies
+	$(am__AMDEP_FALSE)@echo plain mode without dependencies
 else !%FASTDEP%
 if %AMDEP%
 	%VERBOSE%source='%SOURCE%' object='%OBJ%' libtool=no @AMDEPBACKSLASH@
@@ -77,6 +79,8 @@ endif %AMDEP%
 if %?GENERIC%
 ?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJ% %SOURCEFLAG%%SOURCE%
 ?!-o?	%VERBOSE-NODEP%%COMPILE% %-c% %SOURCEFLAG%%SOURCE%
+	$(am__AMDEP_TRUE)@echo plain mode with dependencies
+	$(am__AMDEP_FALSE)@echo plain mode without dependencies
 else !%?GENERIC%
 ## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
 ?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJ% %SOURCEFLAG%`test -f '%SOURCE%' || echo '$(srcdir)/'`%SOURCE%
