@@ -226,6 +226,7 @@ dist_am_DATA = \
   lib/am/dejagnu.am \
   lib/am/depend.am \
   lib/am/depend2.am \
+  lib/am/depend2.amp \
   lib/am/distdir.am \
   lib/am/footer.am \
   lib/am/header-vars.am \

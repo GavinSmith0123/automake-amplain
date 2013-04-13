@@ -7042,8 +7042,12 @@ sub file_contents_internal ($$$%)
 sub file_contents ($$%)
 {
     my ($basename, $where, %transform) = @_;
+    
+    # If in plain mode, prefer the use of *.amp Makefile fragments
+    $basename = ($plain && -e "$libdir/am/$basename.amp") ?
+                "$basename.amp" : "$basename.am";
     my ($comments, $variables, $rules) =
-      file_contents_internal (1, "$libdir/am/$basename.am", $where,
+      file_contents_internal (1, "$libdir/am/$basename", $where,
 			      %transform);
     return "$comments$variables$rules";
 }
