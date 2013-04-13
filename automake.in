@@ -7953,13 +7953,6 @@ sub generate_makefile ($$)
       # "config.mk" will otherwise become the default target
       # This is a GNU extension
       $output_vars .= '.DEFAULT_GOAL := all' . "\n";
-
-
-      # The followind doesn't work because include is interpreted as an
-      # automake include, not a make include
-      
-      # $output_vars .= &file_contents ('config-mk',
-      #				       new Automake::Location,);
     }
   $output_vars .= output_variables;
 
