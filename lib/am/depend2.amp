@@ -73,8 +73,8 @@ if %FASTDEP%
 	$(am__AMDEP_FALSE)@echo plain mode without dependencies
 else !%FASTDEP%
 if %AMDEP%
-	%VERBOSE%source='%SOURCE%' object='%OBJ%' libtool=no @AMDEPBACKSLASH@
-	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)%VERBOSE%source='%SOURCE%' object='%OBJ%' libtool=no @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
 endif %AMDEP%
 if %?GENERIC%
 ?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJ% %SOURCEFLAG%%SOURCE%
@@ -102,8 +102,8 @@ if %FASTDEP%
 ?GENERIC??SUBDIROBJ?	$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
 else !%FASTDEP%
 if %AMDEP%
-	%VERBOSE%source='%SOURCE%' object='%OBJOBJ%' libtool=no @AMDEPBACKSLASH@
-	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)%VERBOSE%source='%SOURCE%' object='%OBJOBJ%' libtool=no @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
 endif %AMDEP%
 if %?GENERIC%
 ?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'`
@@ -131,8 +131,8 @@ if %FASTDEP%
 ?GENERIC??SUBDIROBJ?	$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Plo
 else !%FASTDEP%
 if %AMDEP%
-	%VERBOSE%source='%SOURCE%' object='%LTOBJ%' libtool=yes @AMDEPBACKSLASH@
-	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)%VERBOSE%source='%SOURCE%' object='%LTOBJ%' libtool=yes @AMDEPBACKSLASH@
+	$(am__AMDEP_TRUE)DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
 endif %AMDEP%
 ## We can always use '-o' with Libtool.
 ?GENERIC?	%VERBOSE-NODEP%%LTCOMPILE% %-c% -o %LTOBJ% %SOURCEFLAG%%SOURCE%

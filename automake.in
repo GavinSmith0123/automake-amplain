@@ -1381,6 +1381,10 @@ sub handle_languages
 	my ($AMDEP, $FASTDEP) =
 	  (option 'no-dependencies' || $lang->autodep eq 'no')
 	  ? ('FALSE', 'FALSE') : ('AMDEP', "am__fastdep$fpfx");
+        
+	# In plain mode, only TRUE or FALSE conditionals are acceptible.
+	# Instead, lines will be disabled using @am__AMDEP_{TRUE,FALSE}@
+	$AMDEP = 'TRUE' if ($plain && $AMDEP eq 'AMDEP');
 
 	my $verbose = verbose_flag ($lang->ccer || 'GEN');
 	my $verbose_nodep = ($AMDEP eq 'FALSE')
