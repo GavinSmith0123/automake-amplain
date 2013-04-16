@@ -1542,7 +1542,7 @@ sub handle_languages
 			     BASE      => $obj,
 			     SOURCE    => $source,
 			     SOURCEFLAG => $sourceflags{$srcext} || '',
-			     'source-search' => "`test -f '$source' || echo '$(srcdir)/'`",
+			     'source-search' => '`test -f \'' . $source . '\' || echo \'$(srcdir)/\'`',
 			     # Use $myext and not '.o' here, in case
 			     # we are actually building a new source
 			     # file -- e.g. via yacc.
@@ -1556,8 +1556,9 @@ sub handle_languages
 			     COMPILE   => $obj_compile,
 			     LTCOMPILE => $obj_ltcompile,
 			     -o        => $output_flag,
+			     # I.e., %-o% %OBJ%
 			     -o2       => ($output_flag ?
-				     $output_flag . ' $obj$myext' : ''),
+				     $output_flag . " $obj$myext" : ''),
 			     %file_transform);
 	}
 
