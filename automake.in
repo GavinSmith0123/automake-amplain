@@ -1383,8 +1383,18 @@ sub handle_languages
 	  ? ('FALSE', 'FALSE') : ('AMDEP', "am__fastdep$fpfx");
         
 	# In plain mode, only TRUE or FALSE conditionals are acceptible.
-	# Instead, lines will be disabled using @am__AMDEP_{TRUE,FALSE}@
-	$AMDEP = 'TRUE' if ($plain && $AMDEP eq 'AMDEP');
+	# Instead, lines will be disabled using @am__AMDEP_enabled@
+	# and @am__fastdep$fpfx_enabled@
+	($FASTDEP, $AMDEP) = ('TRUE', 'TRUE') if ($plain && $AMDEP eq 'AMDEP');
+
+        # The following are used in plain mode when dependency tracking
+        # is not disabled at automake time
+        my ($fastdep_enabled, $fastdep_disabled) = ('', '');
+        if ($plain && $AMDEP eq 'TRUE')
+         {
+	    $fastdep_enabled = '$(am__fastdep' . $fpfx . '_enabled)'; 
+	    $fastdep_disabled = '$(am__fastdep' . $fpfx . '_disabled)'; 
+         }
 
 	my $verbose = verbose_flag ($lang->ccer || 'GEN');
 	my $verbose_nodep = ($AMDEP eq 'FALSE')
@@ -1396,6 +1406,8 @@ sub handle_languages
 			 'FPFX'    => $fpfx,
 			 'AMDEP'   => $AMDEP,
 			 'FASTDEP' => $FASTDEP,
+			 'FASTDEP_ENABLED' => $fastdep_enabled,
+			 'FASTDEP_DISABLED' => $fastdep_disabled,
 			 '-c'      => $lang->compile_flag || '',
 			 # These are not used, but they need to be defined
 			 # so &transform do not complain.
@@ -1456,6 +1468,7 @@ sub handle_languages
 			     BASE      => '$*',
 			     SOURCE    => '$<',
 			     SOURCEFLAG => $sourceflags{$ext} || '',
+			     'source-search' => '',
 			     OBJ       => '$@',
 			     OBJOBJ    => '$@',
 			     LTOBJ     => '$@',
@@ -1463,6 +1476,8 @@ sub handle_languages
 			     COMPILE   => '$(' . $lang->compiler . ')',
 			     LTCOMPILE => '$(LT' . $lang->compiler . ')',
 			     -o        => $output_flag,
+			     -o2       => ($output_flag ?
+				     $output_flag . ' $obj$myext' : ''),
 			     SUBDIROBJ => !! option 'subdir-objects');
 	}
 
@@ -1527,6 +1542,7 @@ sub handle_languages
 			     BASE      => $obj,
 			     SOURCE    => $source,
 			     SOURCEFLAG => $sourceflags{$srcext} || '',
+			     'source-search' => "`test -f '$source' || echo '$(srcdir)/'`",
 			     # Use $myext and not '.o' here, in case
 			     # we are actually building a new source
 			     # file -- e.g. via yacc.
@@ -1540,6 +1556,8 @@ sub handle_languages
 			     COMPILE   => $obj_compile,
 			     LTCOMPILE => $obj_ltcompile,
 			     -o        => $output_flag,
+			     -o2       => ($output_flag ?
+				     $output_flag . ' $obj$myext' : ''),
 			     %file_transform);
 	}
 
