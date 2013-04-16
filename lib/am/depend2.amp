@@ -59,31 +59,26 @@
 if %?NONLIBTOOL%
 ?GENERIC?%EXT%.o:
 ?!GENERIC?%OBJ%: %SOURCE%
+	%VERBOSE%
 if %AMDEP%
 ## In fast-dep mode, we can always use -o.
 ## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
 if !%?GENERIC%
-	%FASTDEP_ENABLED%%VERBOSE%
 	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%`test -f '%SOURCE%' || echo '$(srcdir)/'`%SOURCE%
 	%FASTDEP_ENABLED%%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
 else %?GENERIC%
-?!SUBDIROBJ?	%FASTDEP_ENABLED%%VERBOSE%
 ?!SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%SOURCE%
 ?!SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
-?SUBDIROBJ?	%FASTDEP_ENABLED%%VERBOSE
 ?SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%depbase=`echo %OBJ% | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
 ?SUBDIROBJ?	%FASTDEP_ENABLED%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%SOURCE% &&\
 ?SUBDIROBJ?	%FASTDEP_ENABLED%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
 endif %?GENERIC%
-	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%VERBOSE%
 	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%SILENT%source='%SOURCE%' object='%OBJ%' libtool=no \
 	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) \
-## Combined next four lines as line boundaries must be set at automake time
 	%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
-	$(am__AMDEP_disabled)%VERBOSE%
 	$(am__AMDEP_disabled)%SILENT%%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
 else !%AMDEP%
-	%VERBOSE%%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
+	%SILENT%%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
 endif !%AMDEP%
 
 ?GENERIC?%EXT%.obj:
