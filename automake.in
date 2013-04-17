@@ -1346,7 +1346,16 @@ sub handle_languages
 				  . subst ('am__quote')
 				  . $iter
 				  . subst ('am__quote')
-				  . "\n");
+				  . "\n")
+		   unless $plain;
+		   
+		# If automated dependency tracking is disabled, the
+		# dependency files will be empty, and it does no harm
+		# to include them.
+		# This form of the include directive is incompatible with
+		# some versions of make other than GNU make.
+		$output_rules .= "include $iter\n" if $plain;
+
 	    }
 
 	    # Compute the set of directories to remove in distclean-depend.
