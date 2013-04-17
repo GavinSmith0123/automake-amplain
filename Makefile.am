@@ -230,6 +230,7 @@ dist_am_DATA = \
   lib/am/distdir.am \
   lib/am/footer.am \
   lib/am/header-vars.am \
+  lib/am/header-vars.amp \
   lib/am/header.am \
   lib/am/install.am \
   lib/am/inst-vars.am \
