@@ -14,9 +14,10 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-VPATH = @srcdir@
+VPATH = $(srcdir)
 
-@SET_MAKE@
+## FIXME: workarounds to set $(MAKE) if make doesn't set it
+## @SET_MAKE@
 
 ## We used to define this.  However, we don't because vendor makes
 ## (e.g., Solaris, Irix) won't correctly propagate variables that are
