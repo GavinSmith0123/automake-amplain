@@ -6651,18 +6651,28 @@ sub read_am_file ($$)
 sub define_standard_variables
 {
   my $saved_output_vars = $output_vars;
-  my ($comments, undef, $rules) =
-    file_contents_internal (1, "$libdir/am/header-vars.am",
-			    new Automake::Location);
 
-  # If generating plain Makefiles, do not output template definitons
-  # of configure variable. These will be set in "config.mk"
-  if (! $plain) {
-    foreach my $var (sort keys %configure_vars)
+  my ($comments, undef, $rules);
+
+  if (! $plain)
     {
-      &define_configure_variable ($var);
+      ($comments, undef, $rules) =
+        file_contents_internal (1, "$libdir/am/header-vars.am",
+          		      new Automake::Location);
+      foreach my $var (sort keys %configure_vars)
+      {
+        &define_configure_variable ($var);
+      }
     }
-  }
+  else
+    {
+      # If generating plain Makefiles, do not output template definitons
+      # of configure variable. These will be set in "config.mk"
+
+      ($comments, undef, $rules) =
+        file_contents_internal (1, "$libdir/am/header-vars.amp",
+          		      new Automake::Location);
+    }
   $output_vars .= $comments . $rules;
 }
 
