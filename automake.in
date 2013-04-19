@@ -2448,7 +2448,9 @@ sub handle_compile ()
     my $default_includes = '';
     if (! option 'nostdinc')
       {
-	my @incs = ('-I.', subst ('am__isrc'));
+        my @incs;
+        @incs = ('-I.', subst ('am__isrc')) unless $plain;
+        @incs = ('-I. -I$(srcdir)') if $plain;
 
 	my $var = var 'CONFIG_HEADER';
 	if ($var)
@@ -2458,12 +2460,15 @@ sub handle_compile ()
 		push @incs, '-I' . dirname ($hdr);
 	      }
 	  }
+        $default_includes = uniq (@incs);
+
 	# We want '-I. -I$(srcdir)', but the latter -I is redundant
 	# and unaesthetic in non-VPATH builds.  We use `-I.@am__isrc@`
 	# instead.  It will be replaced by '-I.' or '-I. -I$(srcdir)'.
 	# Items in CONFIG_HEADER are never in $(srcdir) so it is safe
 	# to just put @am__isrc@ right after '-I.', without a space.
-	($default_includes = ' ' . uniq (@incs)) =~ s/ @/@/;
+        # Not done in plain mode as we cannot use autoconf output variables
+	($default_includes = ' ' . $default_includes) =~ s/ @/@/ unless $plain;
       }
 
     my (@mostly_rms, @dist_rms);
