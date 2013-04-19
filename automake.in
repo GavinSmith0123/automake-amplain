@@ -5137,7 +5137,18 @@ sub scan_autoconf_config_files ($$)
            "omit leading './' from config file names such as '$local';"
            . "\nremake rules might be subtly broken otherwise")
         if ($local =~ /^\.\//);
-      my $input = locate_am @rest;
+
+      my $input;
+      if (! $plain)
+        {
+          $input = locate_am @rest;
+        }
+      else
+        {
+          # In plain mode, output "Makefile" instead of "Makefile.in"
+          (-f "$local.am") && ($input = $local);
+        }
+
       if ($input)
 	{
 	  # We have a file that automake should generate.
