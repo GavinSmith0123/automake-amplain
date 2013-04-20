@@ -8242,8 +8242,19 @@ sub parse_arguments ()
 
       # Handle $local:$input syntax.
       my ($local, @rest) = split (/:/, $arg);
-      @rest = ("$local.in",) unless @rest;
-      my $input = locate_am @rest;
+
+      my $input;
+      if (! $plain)
+        {
+          @rest = ("$local.in",) unless @rest;
+          $input = locate_am @rest;
+        }
+      else
+        {
+          # In plain mode, output "Makefile" instead of "Makefile.in"
+          (-f "$local.am") && ($input = $local);
+        }
+
       if ($input)
 	{
 	  push @input_files, $input;
