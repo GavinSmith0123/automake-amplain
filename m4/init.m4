@@ -73,7 +73,7 @@ AC_REQUIRE([AM_SANITY_CHECK])dnl
 AC_REQUIRE([AC_ARG_PROGRAM])dnl
 AM_MISSING_PROG([ACLOCAL], [aclocal-${am__api_version}])
 AM_MISSING_PROG([AUTOCONF], [autoconf])
-AM_MISSING_PROG([AUTOMAKE], [automake-${am__api_version}])
+AM_MISSING_PROG([AUTOMAKE], [amplain-${am__api_version}])
 AM_MISSING_PROG([AUTOHEADER], [autoheader])
 AM_MISSING_PROG([MAKEINFO], [makeinfo])
 AC_REQUIRE([AM_PROG_INSTALL_SH])dnl
