@@ -613,6 +613,7 @@ AC_CONFIG_FILES([t/wrap/aclocal-${APIVERSION}:t/wrap/aclocal.in],
 AC_CONFIG_FILES([t/wrap/automake-${APIVERSION}:t/wrap/automake.in],
                 [chmod +x t/wrap/automake-${APIVERSION}],
                 [APIVERSION=$APIVERSION])
+AC_CONFIG_FILES([lib/am/configure.amp])
 
 AC_OUTPUT
 
