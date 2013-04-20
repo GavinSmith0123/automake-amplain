@@ -4080,7 +4080,8 @@ sub handle_configure ($$$@)
 			  @configuredeps);
 
   my $automake_options = '--' . $strictness_name .
-			 (global_option 'no-dependencies' ? ' --ignore-deps' : '');
+			 (global_option 'no-dependencies' ? ' --ignore-deps' : '') .
+			 ($plain ? ' --plain' : '');
 
   $output_rules .= file_contents
     ('configure',
