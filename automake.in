@@ -8001,6 +8001,7 @@ sub generate_makefile ($$)
   if ($plain)
     {
       # Precede list of variables with "config.mk" include
+      $output_vars .= 'include dir.mk' . "\n";
 
       $output_vars .= 'ERR_CONFIG_MK= $(error config.mk not found. ' .
              'Please run configure first.)' . "\n" .
