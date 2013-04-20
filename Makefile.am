@@ -222,6 +222,7 @@ dist_am_DATA = \
   lib/am/clean.am \
   lib/am/compile.am \
   lib/am/configure.am \
+  lib/am/configure.amp \
   lib/am/data.am \
   lib/am/dejagnu.am \
   lib/am/depend.am \

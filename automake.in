@@ -4068,6 +4068,7 @@ sub handle_configure ($$$@)
 
   my $colon_infile = ':' . join (':', @inputs);
   $colon_infile = '' if $colon_infile eq ":$makefile.in";
+  # Note: results of the following are not used in plain mode
   my @rewritten = rewrite_inputs_into_dependencies ($makefile, @inputs);
   my ($regen_aclocal_m4, @aclocal_m4_deps) = scan_aclocal_m4;
   define_pretty_variable ('am__aclocal_m4_deps', TRUE, INTERNAL,
