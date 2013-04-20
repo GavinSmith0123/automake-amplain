@@ -65,7 +65,7 @@ endif %?TOPDIR_P%
 ## FIXME: $(am__depfiles_maybe) lets us re-run the rule to create the
 ## .P files.  Ideally we wouldn't have to do this by hand.
 	echo ' cd $(top_builddir) && $(SHELL) ./config.status %CONFIG-MAKEFILE% $(am__depfiles_maybe)'; \
-	cd $(top_builddir) && $(SHELL) ./config.status %CONFIG-MAKEFILE% $(am__depfiles_maybe);;
+	cd $(top_builddir) && $(SHELL) ./config.status %CONFIG-MAKEFILE% $(am__depfiles_maybe);
 
 ## Avoid the "deleted header file" problem for the dependencies.
 ?HAVE-MAKEFILE-IN-DEPS?%MAKEFILE-IN-DEPS%:
