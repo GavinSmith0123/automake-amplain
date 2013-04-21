@@ -1355,7 +1355,7 @@ sub handle_languages
 		# This form of the include directive is incompatible with
 		# some versions of make other than GNU make.
 		$output_rules .= "include $iter\n" .
-                                 $iter . ": config.mk\n" if $plain;
+                                 $iter . ": config.mk ; \@touch \$\@\n" if $plain;
 
 	    }
 
