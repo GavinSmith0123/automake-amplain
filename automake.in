@@ -3792,6 +3792,12 @@ sub handle_dist ()
 	}
     }
 
+  # Extra files to be distributed in plain mode
+  if ($plain)
+    {
+      push_dist_common('$(srcdir)/dir.mk $(srcdir)/dir.mk.in');
+    }
+
   # We might copy elements from $configure_dist_common to
   # %dist_common if we think we need to.  If the file appears in our
   # directory, we would have discovered it already, so we don't
