@@ -89,7 +89,7 @@ endif %?TOPDIR_P%
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 ?TOPDIR_P?	if test -e ./config.status; then \
-        $(SHELL) ./config.status --recheck; else $(SHELL) ./configure; \
+        $(SHELL) ./config.status --recheck; else $(SHELL) $(top_srcdir)/configure; \
         fi
 ?!TOPDIR_P?	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
