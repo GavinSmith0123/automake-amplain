@@ -3792,6 +3792,11 @@ sub handle_dist ()
 	}
     }
 
+  if ($plain)
+    {
+      push_dist_common('$(srcdir)/dir.mk.in');
+    }
+
   # We might copy elements from $configure_dist_common to
   # %dist_common if we think we need to.  If the file appears in our
   # directory, we would have discovered it already, so we don't
@@ -5170,25 +5175,6 @@ sub scan_autoconf_config_files ($$)
     }
 }
 
-# &distribute_dir_mk ($WHERE, $CONFIG-HEADERS)
-# --------------------------------------------
-# Generate names of dir.mk and dir.mk.in files to distribute
-# from argument to AX_CONFIG_INCLUDE
-sub distribute_dir_mk ($$)
-{
-  my ($where, $config_headers) = @_;
-
-  foreach (split ' ', $config_headers)
-    {
-      my ($dir);
-      # Get directory path from file with trailing slash
-      $_ =~ m"^(([^/]*/)*)";
-      $dir = $1;
-      # FIXME: do we want to precede these with $(srcdir)/?
-      push_dist_common("$dir" . "dir.mk $dir" . "dir.mk.in");
-    }
-}
-
 # &scan_autoconf_traces ($FILENAME)
 # ---------------------------------
 sub scan_autoconf_traces ($)
@@ -5325,10 +5311,6 @@ sub scan_autoconf_traces ($)
 	      push @config_links, $spec;
 	    }
 	}
-      elsif ($macro eq 'AX_CONFIG_INCLUDE')
-        {
-          distribute_dir_mk ($where, $args[1]);
-        }
       elsif ($macro eq 'AC_FC_SRCEXT')
 	{
 	  my $suffix = $args[1];
