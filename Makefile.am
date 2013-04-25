@@ -265,6 +265,7 @@ dist_am_DATA = \
 ## ------------------------------ ##
 
 dist_automake_ac_DATA = \
+  m4/ax_config_include.m4 \
   m4/amversion.m4 \
   m4/ar-lib.m4 \
   m4/as.m4 \
