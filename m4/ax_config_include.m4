@@ -1,9 +1,8 @@
-# Create config.mk.in in source tree. 
-AC_DEFUN([_AX_CONFIG_INCLUDE],
-[for ac_file in $@; do
+AC_DEFUN([AX_CONFIG_INCLUDE],
+[# Create config.mk.in in source tree 
+for ac_file in $@; do
   t=$srcdir/$ac_file.in
-  d=$srcdir/$(dirname $ac_file)/dir.mk.in
-  rm -f $t $d
+  rm -f $t
   
   for ac_var in $ac_subst_vars; do
    eval am_var=am_subst_notmake_\$ac_var
@@ -12,6 +11,19 @@ AC_DEFUN([_AX_CONFIG_INCLUDE],
      echo $ac_var = \@$ac_var\@ >> $t
    fi
   done
+done
+# This will cause automake to generate rebuild rules for config.mk
+AC_CONFIG_FILES($@)
+
+# Handle dir.mk's
+# FIXME: only do it once for each directory where an output file exists
+# FIXME: Handle Makefile:Makefile.in syntax properly
+echo ac_config_files is $ac_config_files
+for ac_file in $ac_config_files; do
+  dir_mk_name=$(dirname $ac_file)/dir.mk
+  AC_CONFIG_FILES([$dir_mk_name])
+  d=$srcdir/$dir_mk_name.in
+  rm -f $d
   # These variables are substituted within config.status
   # on a Makefile-by-Makefile basis.
   for var in \
@@ -21,16 +33,6 @@ AC_DEFUN([_AX_CONFIG_INCLUDE],
     echo "$var = @$var@" >> $d
   done
   echo am__aux_dir = $am_aux_dir >> $d
-done
-])
-
-AC_DEFUN([AX_CONFIG_INCLUDE],
-[AC_CONFIG_COMMANDS_PRE([_AX_CONFIG_INCLUDE($@)])
-# This will cause automake to generate rebuild rules
-AC_CONFIG_FILES($@)
-for ac_file in $@; do
-  dir_mk_name=$(dirname $ac_file)/dir.mk
-  AC_CONFIG_FILES([$dir_mk_name])
 done
 ])
 
