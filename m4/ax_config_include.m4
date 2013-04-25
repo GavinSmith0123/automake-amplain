@@ -17,7 +17,6 @@ AC_CONFIG_FILES($@)
 
 # Handle dir.mk's
 # FIXME: only do it once for each directory where an output file exists
-echo ac_config_files is $ac_config_files
 for ac_file in $ac_config_files; do
   dir_mk_name=$(dirname $(echo $ac_file | sed 's/:.*//'))/dir.mk
   AC_CONFIG_FILES([$dir_mk_name])
