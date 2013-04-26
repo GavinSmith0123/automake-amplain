@@ -4665,6 +4665,7 @@ sub handle_clean ($)
      DISTCLEAN_RMS        => join ('', sort @{$rms{&DIST_CLEAN}}),
      MAINTAINER_CLEAN_RMS => join ('', sort @{$rms{&MAINTAINER_CLEAN}}),
      MAKEFILE             => basename $makefile,
+     'TOPDIR_P'             => $relative_dir eq '.',
      );
 }
 
