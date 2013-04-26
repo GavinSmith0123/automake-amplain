@@ -41,7 +41,7 @@ distclean-generic:
 distclean:
 	-rm -f %MAKEFILE%
 	echo foo
-?TOPDIR_P?	if test "$(top_srcdir)" = "$(top_buildir)"; then \
+?TOPDIR_P?	if test "$(top_srcdir)" = "$(top_builddir)"; then \
 ?TOPDIR_P?	cp $(top_srcdir)/dir.mk.default $(top_builddir)/dir.mk ; \
 ?TOPDIR_P?	else rm $(top_builddir)/dir.mk; fi	
 ?!TOPDIR_P?	rm $(builddir)/dir.mk
