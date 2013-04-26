@@ -5311,6 +5311,8 @@ sub scan_autoconf_traces ($)
 	      $ac_config_files_location{$dest} = $where;
 	      push @config_links, $spec;
 	    }
+	    scan_autoconf_config_files ($where, $args[1])
+              if $plain;
 	}
       elsif ($macro eq 'AC_FC_SRCEXT')
 	{
