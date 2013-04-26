@@ -8023,10 +8023,9 @@ sub generate_makefile ($$)
       # FIXME: We should avoid defining DEPDIR in AX_CONFIG_INCLUDE
       $output_vars .= 'DEPDIR = .deps'  . "\n";
 
-
-      # "config.mk" will otherwise become the default target
-      # This is a GNU extension
-      $output_vars .= '.DEFAULT_GOAL := all' . "\n";
+      # Specify a default target to stop any other targets we define
+      # become the default target
+      $output_vars .= 'am_plain_default_goal: all' . "\n";
     }
   $output_vars .= output_variables;
 
