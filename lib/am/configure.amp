@@ -40,27 +40,7 @@ AUTOMAKE="$(am__aux_dir)/missing" amplain-1.13
 ## ./config.status to recreate the lost Makefile.
 .PRECIOUS: %MAKEFILE%
 
-%MAKEFILE%: %MAKEFILE-IN-DEPS% %MAKEFILE-AM% $(am__configure_deps) $(top_builddir)/config.status
-## If configure.ac or one of configure's dependencies has changed, all
-## Makefiles are to be updated; it is then more efficient to run
-## automake on all the Makefiles at once.  It also allow Automake to be
-## run for newly added directories.
-	@for dep in $?; do \
-	  case '$(am__configure_deps)' in \
-	    *$$dep*) \
-?TOPDIR_P?	      echo ' cd $(srcdir) && $(AUTOMAKE) %AUTOMAKE-OPTIONS%'; \
-?TOPDIR_P?	      $(am__cd) $(srcdir) && $(AUTOMAKE) %AUTOMAKE-OPTIONS% \
-?TOPDIR_P?		&& exit 0; \
-?!TOPDIR_P?	      ( cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh ) \
-## If on the other hand, subdir/Makefile has been removed, then toplevel
-## am--refresh will not be aware of any need to run.  We still invoke it
-## due to $? listing all prerequisites.  Fix up for it by running the rebuild
-## rule for this file only, below.
-?!TOPDIR_P?	        && { if test -f $@; then exit 0; else break; fi; }; \
-	      exit 1;; \
-	  esac; \
-	done; \
-## Otherwise, rebuild only this file.
+%MAKEFILE%: %MAKEFILE-IN-DEPS% %MAKEFILE-AM%
 	echo ' cd $(top_srcdir) && $(AUTOMAKE) %AUTOMAKE-OPTIONS% %MAKEFILE-AM-SOURCES%'; \
 	$(am__cd) $(top_srcdir) && \
 	  $(AUTOMAKE) %AUTOMAKE-OPTIONS% %MAKEFILE-AM-SOURCES%
