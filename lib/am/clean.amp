@@ -39,8 +39,6 @@ distclean-generic:
 ## If you change distclean here, you probably also want to change
 ## maintainer-clean below.
 distclean:
-	-rm -f %MAKEFILE%
-	echo foo
 ?TOPDIR_P?	if test "$(top_srcdir)" = "$(top_builddir)"; then \
 ?TOPDIR_P?	cp $(top_srcdir)/dir.mk.default $(top_builddir)/dir.mk ; \
 ?TOPDIR_P?	else rm $(top_builddir)/dir.mk; fi	
