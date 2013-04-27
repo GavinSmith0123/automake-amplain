@@ -488,6 +488,10 @@ my $am_file = 'BUG';
 # Relative dir of the output makefile.
 my $relative_dir;
 
+# Path from build/source directory to top build/source directory with
+# trailing slash
+my $top_build_prefix;
+
 # Greatest timestamp of the output's dependencies (excluding
 # configure's dependencies).
 my $output_deps_greatest_timestamp;
@@ -7905,6 +7909,19 @@ sub generate_makefile ($$)
 
   $relative_dir = dirname ($makefile);
 
+  # Set $top_build_prefix
+  if ($relative_dir eq '.')
+    {
+      $top_build_prefix = '';
+    }
+  else
+    {
+      # Replace every directory in relative_dir with ".." and append
+      # trailing slash
+      $top_build_prefix = $relative_dir . '/';
+      $top_build_prefix =~ s|[^\\/]+|..|g;
+    }
+
   read_main_am_file ($makefile_am, $makefile_in);
   if (handle_options)
     {
@@ -8015,7 +8032,7 @@ sub generate_makefile ($$)
       #$output_vars .= 'ERR_CONFIG_MK= $(error config.mk not found. ' .
       #       'Please run configure first.)' . "\n" .
       #       'config.mk: ; $(ERR_CONFIG_MK)' . "\n";
-      $output_vars .= 'include config.mk' . "\n";
+      $output_vars .= "include $top_build_prefix" . "config.mk\n";
 
       # DEPDIR is required to find *.Po includes
       # Otherwise, if config.mk is not there, we will not get the error
