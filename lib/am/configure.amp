@@ -54,6 +54,11 @@ AUTOMAKE="$(am__aux_dir)/missing" amplain-1.13
 
 DIST_COMMON += %MAKEFILE-AM%
 
+## config.mk
+# Both top_build_prefix and top_src_prefix are empty if config.mk does
+# not exist, so we default to the current directory
+$(top_build_prefix)config.mk: $(top_build_prefix)config.status
+	cd $(top_build_prefix). && $(SHELL) ./config.status $@
 
 ## --------------------------- ##
 ## config.status & configure.  ##
@@ -67,13 +72,13 @@ if %?TOPDIR_P%
 DIST_COMMON += $(top_srcdir)/configure $(am__configure_deps)
 endif %?TOPDIR_P%
 
-$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+$(top_build_prefix)config.status: $(top_src_prefix)configure $(CONFIG_STATUS_DEPENDENCIES)
 ?TOPDIR_P?	if test -e ./config.status; then \
-?TOPDIR_P?        $(SHELL) ./config.status --recheck; else $(SHELL) $(top_srcdir)/configure; \
-?TOPDIR_P?      fi
+?TOPDIR_P?	  $(SHELL) ./config.status --recheck; else $(SHELL) $(top_src_prefix)configure; \
+?TOPDIR_P?	fi
 ?!TOPDIR_P?	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure: %MAINTAINER-MODE% $(am__configure_deps)
+$(top_src_prefix)configure: %MAINTAINER-MODE% $(am__configure_deps)
 ?TOPDIR_P?	$(am__cd) $(srcdir) && $(AUTOCONF)
 ?!TOPDIR_P?	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 

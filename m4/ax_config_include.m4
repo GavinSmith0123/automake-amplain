@@ -18,8 +18,14 @@ for ac_file in $@; do
   # @srcdir@ is path from top_builddir to top_srcdir provided
   # config.mk is in top_builddir
   echo "relative_src_path = @srcdir@" >> $t
+  # Analagous to top_build_prefix
+  echo "top_src_prefix = @srcdir@/" >> $t
 done
-# This will cause automake to generate rebuild rules for config.mk
-AC_CONFIG_FILES($@)
+dnl Prevent automake from generating rebuild rules for config.mk by
+dnl passing "config.mk" to AC_CONFIG_FILES indirectly
+ac_config_mk_location=config.mk
+dnl Third option is needed otherwise config.status doesn't work properly.
+dnl See http://lists.gnu.org/archive/html/bug-autoconf/2008-08/msg00029.html
+AC_CONFIG_FILES([$ac_config_mk_location], [], [ac_config_mk_location=$ac_config_mk_location])
 ])
 
