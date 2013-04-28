@@ -4666,7 +4666,8 @@ sub handle_clean ($)
      CLEAN_RMS            => join ('', sort @{$rms{&CLEAN}}),
      DISTCLEAN_RMS        => join ('', sort @{$rms{&DIST_CLEAN}}),
      MAINTAINER_CLEAN_RMS => join ('', sort @{$rms{&MAINTAINER_CLEAN}}),
-     MAKEFILE             => basename $makefile,
+     MAKEFILE             => basename ($makefile),
+     PLAIN                => $plain,
      );
 }
 

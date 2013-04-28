@@ -39,7 +39,7 @@ distclean-generic:
 ## If you change distclean here, you probably also want to change
 ## maintainer-clean below.
 distclean:
-	-rm -f %MAKEFILE%
+?!PLAIN?	-rm -f %MAKEFILE%
 
 maintainer-clean-am: maintainer-clean-generic distclean-am
 maintainer-clean-generic:
