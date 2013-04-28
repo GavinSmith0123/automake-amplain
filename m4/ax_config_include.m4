@@ -11,6 +11,13 @@ for ac_file in $@; do
      echo $ac_var = \@$ac_var\@ >> $t
    fi
   done
+  for var in \
+    abs_top_srcdir abs_top_builddir; do
+    echo "$var = @$var@" >> $t
+  done
+  # @srcdir@ is path from top_builddir to top_srcdir provided
+  # config.mk is in top_builddir
+  echo "relative_src_path = @srcdir@" >> $t
 done
 # This will cause automake to generate rebuild rules for config.mk
 AC_CONFIG_FILES($@)
@@ -22,15 +29,7 @@ for ac_file in $ac_config_files $ac_config_links; do
   AC_CONFIG_FILES([$dir_mk_name])
   d=$srcdir/$dir_mk_name.in
   rm -f $d
-  # These variables are substituted within config.status
-  # on a Makefile-by-Makefile basis.
-  for var in \
-    top_builddir top_build_prefix \
-    srcdir abs_srcdir top_srcdir abs_top_srcdir \
-    builddir abs_builddir abs_top_builddir; do
-    echo "$var = @$var@" >> $d
-  done
-  echo am__aux_dir = $am_aux_dir >> $d
+  touch $d
 done
 ])
 

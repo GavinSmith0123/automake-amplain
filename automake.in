@@ -488,6 +488,9 @@ my $am_file = 'BUG';
 # Relative dir of the output makefile.
 my $relative_dir;
 
+# Path from build/source directory to top build/source directory
+my $top_builddir;
+
 # Path from build/source directory to top build/source directory with
 # trailing slash
 my $top_build_prefix;
@@ -7912,14 +7915,15 @@ sub generate_makefile ($$)
   # Set $top_build_prefix
   if ($relative_dir eq '.')
     {
+      $top_builddir = '.';
       $top_build_prefix = '';
     }
   else
     {
-      # Replace every directory in relative_dir with ".." and append
-      # trailing slash
-      $top_build_prefix = $relative_dir . '/';
-      $top_build_prefix =~ s|[^\\/]+|..|g;
+      # Replace every directory in relative_dir with ".."
+      $top_builddir = $relative_dir;
+      $top_builddir =~ s|[^\\/]+|..|g;
+      $top_build_prefix = $top_builddir . '/';
     }
 
   read_main_am_file ($makefile_am, $makefile_in);
@@ -8033,6 +8037,19 @@ sub generate_makefile ($$)
       #       'Please run configure first.)' . "\n" .
       #       'config.mk: ; $(ERR_CONFIG_MK)' . "\n";
       $output_vars .= "include $top_build_prefix" . "config.mk\n";
+
+      # Define directory variables based on contents of config.mk
+      $output_vars .=
+        "inv_top_builddir = $relative_dir\n" .
+        'abs_srcdir = $(abs_top_srcdir)/$(inv_top_buildir)' . "\n" .
+        'abs_builddir = $(abs_top_builddir)/$(inv_top_buildir)' . "\n" .
+        'srcdir = $(top_srcdir)/$(inv_top_builddir)' . "\n" .
+        'builddir = .' . "\n" .
+        "top_build_prefix = $top_build_prefix\n" .
+        "top_builddir = $top_builddir\n" .
+        'top_srcdir = $(top_builddir)/$(relative_src_path)' . "\n";
+     
+      $output_vars .= "am__aux_dir = \$(abs_top_srcdir)/$config_aux_dir\n";
 
       # DEPDIR is required to find *.Po includes
       # Otherwise, if config.mk is not there, we will not get the error
