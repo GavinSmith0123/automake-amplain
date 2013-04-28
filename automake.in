@@ -3799,11 +3799,6 @@ sub handle_dist ()
 	}
     }
 
-  if ($plain)
-    {
-      push_dist_common('$(srcdir)/dir.mk.in');
-    }
-
   # We might copy elements from $configure_dist_common to
   # %dist_common if we think we need to.  If the file appears in our
   # directory, we would have discovered it already, so we don't
@@ -8030,7 +8025,6 @@ sub generate_makefile ($$)
   if ($plain)
     {
       # Precede list of variables with "config.mk" include
-      $output_vars .= 'include dir.mk' . "\n";
 
       #$output_vars .= 'ERR_CONFIG_MK= $(error config.mk not found. ' .
       #       'Please run configure first.)' . "\n" .
