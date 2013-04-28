@@ -8026,9 +8026,6 @@ sub generate_makefile ($$)
     {
       # Precede list of variables with "config.mk" include
 
-      #$output_vars .= 'ERR_CONFIG_MK= $(error config.mk not found. ' .
-      #       'Please run configure first.)' . "\n" .
-      #       'config.mk: ; $(ERR_CONFIG_MK)' . "\n";
       $output_vars .= "include $top_build_prefix" . "config.mk\n";
 
       # Define directory variables based on contents of config.mk
