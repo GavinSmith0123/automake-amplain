@@ -220,7 +220,6 @@ dist_am_DATA = \
   lib/am/check2.am \
   lib/am/clean-hdr.am \
   lib/am/clean.am \
-  lib/am/clean.amp \
   lib/am/compile.am \
   lib/am/configure.am \
   lib/am/configure.amp \
