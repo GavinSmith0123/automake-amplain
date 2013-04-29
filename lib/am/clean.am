@@ -51,7 +51,7 @@ maintainer-clean-generic:
 
 ## See comment for distclean.
 maintainer-clean:
-	-rm -f %MAKEFILE%
+?!PLAIN?	-rm -f %MAKEFILE%
 
 .PHONY: clean mostlyclean distclean maintainer-clean \
 clean-generic mostlyclean-generic distclean-generic maintainer-clean-generic
