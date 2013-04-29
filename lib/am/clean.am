@@ -28,7 +28,7 @@ clean-generic:
 distclean-am: distclean-generic clean-am
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
-	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test "$(abs_top_srcdir)" = "$(abs_top_builddir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
 %DISTCLEAN_RMS%
 
 ## Makefiles and their dependencies cannot be cleaned by
