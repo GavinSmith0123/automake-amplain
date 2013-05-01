@@ -1604,14 +1604,8 @@ sub handle_languages
 	define_linker_variable ($lang)
 	  if ($lang->link);
 
-	# If generating plain Makefiles, config_vars (e.g. CC) are
-	# not being set in the generated Makefile.in, so this doesn't
-	# check whether they are being set or not.
-	# Maybe we could scan config.mk for them.
-	if (! $plain) {
-	  require_variables ("$am_file.am", $lang->Name . " source seen",
+	require_variables ("$am_file.am", $lang->Name . " source seen",
 	      		   TRUE, @{$lang->config_vars});
-	}
 
 	# Call the finisher.
 	$lang->finish;
@@ -6261,8 +6255,16 @@ sub define_configure_variable ($)
   # would be a bad idea to output `U = @U@` when `@U@` can be
   # substituted as `\`.
   my $pretty = exists $ignored_configure_vars{$var} ? VAR_SILENT : VAR_ASIS;
+
+  # If generating plain Makefiles, do not output template definitons
+  # of configure variable. These will be set in "config.mk".
+  # We still define them in Automake::Variable so we can check them with
+  # require_variables.
+  # These could still be overridden and output anyway.
+  $plain && ($pretty = VAR_SILENT);
+
   Automake::Variable::define ($var, VAR_CONFIGURE, '', TRUE, subst $var,
-			      '', $configure_vars{$var}, $pretty);
+                             '', $configure_vars{$var}, $pretty);
 }
 
 
@@ -6688,20 +6690,18 @@ sub define_standard_variables
       ($comments, undef, $rules) =
         file_contents_internal (1, "$libdir/am/header-vars.am",
           		      new Automake::Location);
-      foreach my $var (sort keys %configure_vars)
-      {
-        &define_configure_variable ($var);
-      }
     }
   else
     {
-      # If generating plain Makefiles, do not output template definitons
-      # of configure variable. These will be set in "config.mk"
-
       ($comments, undef, $rules) =
         file_contents_internal (1, "$libdir/am/header-vars.amp",
           		      new Automake::Location);
     }
+
+  foreach my $var (sort keys %configure_vars)
+  {
+    &define_configure_variable ($var);
+  }
   $output_vars .= $comments . $rules;
 }
 
@@ -8021,8 +8021,6 @@ sub generate_makefile ($$)
   handle_clean ($makefile);
   handle_factored_dependencies;
 
-  # Comes last, because all the above procedures may have
-  # defined or overridden variables.
   if ($plain)
     {
       # Precede list of variables with "config.mk" include
@@ -8052,6 +8050,9 @@ sub generate_makefile ($$)
       # become the default target
       $output_vars .= 'am_plain_default_goal: all' . "\n";
     }
+
+  # Comes last, because all the above procedures may have
+  # defined or overridden variables.
   $output_vars .= output_variables;
 
   check_typos;
