@@ -1,6 +1,6 @@
 AC_DEFUN([AX_CONFIG_INCLUDE],
 [# Create config.mk.in in source tree 
-for ac_file in $@; do
+for ac_file in config.mk; do
   t=$srcdir/$ac_file.in
   rm -f $t
   
