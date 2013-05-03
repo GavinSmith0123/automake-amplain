@@ -158,9 +158,9 @@ AM_CONDITIONAL([am__fastdep$1], [
 if test "x$enable_dependency_tracking" != xno \
   && test "$am_cv_$1_dependencies_compiler_type" = gcc3; then
   am__fastdep$1_enabled=''
-  am__fastdep$1_disabled='@: '
+  am__fastdep$1_disabled='@: || '
 else
-  am__fastdep$1_enabled='@: '
+  am__fastdep$1_enabled='@: || '
   am__fastdep$1_disabled=''
 fi
 AC_SUBST([am__fastdep$1_enabled])
@@ -188,14 +188,14 @@ AS_HELP_STRING(
 AS_HELP_STRING(
   [--disable-dependency-tracking],
   [speeds up one-time build])])
-am__AMDEP_enabled='@: '
+am__AMDEP_enabled='@: || '
 am__AMDEP_disabled=''
 if test "x$enable_dependency_tracking" != xno; then
   am_depcomp="$ac_aux_dir/depcomp"
   AMDEPBACKSLASH='\'
   am__nodep='_no'
   am__AMDEP_enabled=''
-  am__AMDEP_disabled='@: '
+  am__AMDEP_disabled='@: || '
 fi
 AC_SUBST([am__AMDEP_enabled])
 AC_SUBST([am__AMDEP_disabled])
