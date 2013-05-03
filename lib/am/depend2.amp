@@ -75,38 +75,35 @@ else %?GENERIC%
 endif %?GENERIC%
 	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%SILENT%source='%SOURCE%' object='%OBJ%' libtool=no \
 	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) \
-	%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
-	$(am__AMDEP_disabled)%SILENT%%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
+	%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
+	$(am__AMDEP_disabled)%SILENT%%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
 else !%AMDEP%
-	%SILENT%%COMPILE% %-c% %-o2% %SOURCEFLAG%%source-search%%SOURCE%
+	%SILENT%%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
 endif !%AMDEP%
 
 ?GENERIC?%EXT%.obj:
-?!GENERIC?%OBJOBJ%: %SOURCE%
-if %FASTDEP%
+?!GENERIC?%OBJ%: %SOURCE%
+	%VERBOSE%
+if %AMDEP%
 ## In fast-dep mode, we can always use -o.
 ## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
-?!GENERIC?	%VERBOSE%%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`if test -f '%SOURCE%'; then $(CYGPATH_W) '%SOURCE%'; else $(CYGPATH_W) '$(srcdir)/%SOURCE%'; fi`
-?!GENERIC?	%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
-?GENERIC??!SUBDIROBJ?	%VERBOSE%%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'`
-?GENERIC??!SUBDIROBJ?	%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
-?GENERIC??SUBDIROBJ?	%VERBOSE%depbase=`echo %OBJ% | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-?GENERIC??SUBDIROBJ?	%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'` &&\
-?GENERIC??SUBDIROBJ?	$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
-else !%FASTDEP%
-if %AMDEP%
-	$(am__AMDEP_TRUE)%VERBOSE%source='%SOURCE%' object='%OBJOBJ%' libtool=no @AMDEPBACKSLASH@
-	$(am__AMDEP_TRUE)DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) @AMDEPBACKSLASH@
-endif %AMDEP%
-if %?GENERIC%
-?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'`
-?!-o?	%VERBOSE-NODEP%%COMPILE% %-c% `$(CYGPATH_W) %SOURCEFLAG%'%SOURCE%'`
-else !%?GENERIC%
-## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
-?-o?	%VERBOSE-NODEP%%COMPILE% %-c% %-o% %OBJOBJ% %SOURCEFLAG%`if test -f '%SOURCE%'; then $(CYGPATH_W) '%SOURCE%'; else $(CYGPATH_W) '$(srcdir)/%SOURCE%'; fi`
-?!-o?	%VERBOSE-NODEP%%COMPILE% %-c% %SOURCEFLAG%`if test -f '%SOURCE%'; then $(CYGPATH_W) '%SOURCE%'; else $(CYGPATH_W) '$(srcdir)/%SOURCE%'; fi`
-endif !%?GENERIC%
-endif !%FASTDEP%
+if !%?GENERIC%
+	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`if test -f '%SOURCE%'; then $(CYGPATH_W) '%SOURCE%'; else $(CYGPATH_W) '$(srcdir)/%SOURCE%'; fi`
+	%FASTDEP_ENABLED%%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
+else %?GENERIC%
+?!SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'`
+?!SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
+?SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%depbase=`echo %OBJ% | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+?SUBDIROBJ?	%FASTDEP_ENABLED%%COMPILE% -MT %OBJOBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJOBJ% %SOURCEFLAG%`$(CYGPATH_W) '%SOURCE%'` &&\
+?SUBDIROBJ?	%FASTDEP_ENABLED%$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
+endif %?GENERIC%
+	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%SILENT%source='%SOURCE%' object='%OBJOBJ%' libtool=no \
+	DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) \
+	%COMPILE% %-c% %-oOBJOBJ% %SOURCEFLAG% %cygpath-source%
+	$(am__AMDEP_disabled)%SILENT%%COMPILE% %-c% %-oOBJOBJ% %SOURCEFLAG% %cygpath-source%
+else !%AMDEP%
+	%SILENT%%COMPILE% %-c% %-oOBJOBJ% %SOURCEFLAG% %cygpath-source%
+endif !%AMDEP%
 endif %?NONLIBTOOL%
 
 if %?LIBTOOL%

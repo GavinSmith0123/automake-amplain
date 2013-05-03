@@ -1486,6 +1486,7 @@ sub handle_languages
 			     SOURCE    => '$<',
 			     SOURCEFLAG => $sourceflags{$ext} || '',
 			     'source-search' => '',
+			     'cygpath-source' => '`$(CYGPATH_W) \'$<\'`',
 			     OBJ       => '$@',
 			     OBJOBJ    => '$@',
 			     LTOBJ     => '$@',
@@ -1493,8 +1494,8 @@ sub handle_languages
 			     COMPILE   => '$(' . $lang->compiler . ')',
 			     LTCOMPILE => '$(LT' . $lang->compiler . ')',
 			     -o        => $output_flag,
-			     -o2       => ($output_flag ?
-				     $output_flag . ' $obj$myext' : ''),
+			     -oOBJ     => '-o $@',
+			     -oOBJOBJ  => '-o $@',
 			     SUBDIROBJ => !! option 'subdir-objects');
 	}
 
@@ -1560,6 +1561,7 @@ sub handle_languages
 			     SOURCE    => $source,
 			     SOURCEFLAG => $sourceflags{$srcext} || '',
 			     'source-search' => '`test -f \'' . $source . '\' || echo \'$(srcdir)/\'`',
+			     'cygpath-source' => "`if test -f '%SOURCE%'; then $(CYGPATH_W) '%SOURCE%'; else $(CYGPATH_W) '$(srcdir)/%SOURCE%'; fi`",
 			     # Use $myext and not '.o' here, in case
 			     # we are actually building a new source
 			     # file -- e.g. via yacc.
@@ -1573,9 +1575,12 @@ sub handle_languages
 			     COMPILE   => $obj_compile,
 			     LTCOMPILE => $obj_ltcompile,
 			     -o        => $output_flag,
-			     # I.e., %-o% %OBJ%
-			     -o2       => ($output_flag ?
+			     # "%-o% %OBJ%"
+			     -oOBJ       => ($output_flag ?
 				     $output_flag . " $obj$myext" : ''),
+			     # "%-o% %OBJOBJ%"
+			     -oOBJOBJ    => ($output_flag ?
+				     $output_flag . " $obj.obj" : ''),
 			     %file_transform);
 	}
 
