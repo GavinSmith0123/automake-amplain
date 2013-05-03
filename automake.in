@@ -1482,6 +1482,7 @@ sub handle_languages
 			     'DERIVED-EXT' => $der_ext,
 
 			     'set-depbase' => 'depbase=`echo $@ | sed \'s|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||\'` ; ',
+			     'set-depbase-OBJ' => 'depbase=`echo $@ | sed \'s|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||\'` ; ',
 			     DEPBASE   => $depbase,
 			     BASE      => '$*',
 			     SOURCE    => '$<',
@@ -1559,6 +1560,7 @@ sub handle_languages
 
 			     DEPBASE   => $depbase,
 			     'set-depbase' => '',
+			     'set-depbase-OBJ' => '',
 			     BASE      => $obj,
 			     SOURCE    => $source,
 			     SOURCEFLAG => $sourceflags{$srcext} || '',
