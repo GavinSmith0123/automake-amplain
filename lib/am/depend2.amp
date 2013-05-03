@@ -63,12 +63,8 @@ if %?NONLIBTOOL%
 if %AMDEP%
 ## In fast-dep mode, we can always use -o.
 ## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
-?!GENERIC?	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%source-search%%SOURCE% &&\
-?GENERIC??!SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%SOURCE% &&\
-?GENERIC??SUBDIROBJ?	%FASTDEP_ENABLED%%SILENT%depbase=`echo %OBJ% | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-?GENERIC??SUBDIROBJ?	%FASTDEP_ENABLED%%COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%SOURCE% &&\
-## Continuation of any of three lines above
-	$(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
+	%FASTDEP_ENABLED%%SILENT%%set-depbase% %COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%source-search%%SOURCE%
+	  %FASTDEP_ENABLED%%SILENT%%set-depbase% $(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po
 	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%SILENT%source='%SOURCE%' object='%OBJ%' libtool=no \
 	  DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) \
 	  %COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
