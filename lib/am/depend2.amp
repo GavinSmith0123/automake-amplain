@@ -62,7 +62,7 @@ if %?NONLIBTOOL%
 	%VERBOSE%
 if %AMDEP%
 ## In fast-dep mode, we can always use -o.
-## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
+## %source-search% emulates a VPATH search on %SOURCE% for non-suffix rules.
 	%SILENT%%FASTDEP_ENABLED% (%set-depbase% %COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%source-search%%SOURCE% &&\
 	  $(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po)
 	%SILENT%%FASTDEP_DISABLED%$(am__AMDEP_enabled)%source='%SOURCE%' object='%OBJ%' libtool=no \
