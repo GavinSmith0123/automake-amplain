@@ -63,13 +63,13 @@ if %?NONLIBTOOL%
 if %AMDEP%
 ## In fast-dep mode, we can always use -o.
 ## For non-suffix rules, we must emulate a VPATH search on %SOURCE%.
-	%FASTDEP_ENABLED% (%SILENT%%set-depbase% %COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%source-search%%SOURCE% &&\
-	  %set-depbase% $(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po)
-	%FASTDEP_DISABLED%$(am__AMDEP_enabled)%SILENT%source='%SOURCE%' object='%OBJ%' libtool=no \
+	%SILENT%%FASTDEP_ENABLED% (%set-depbase% %COMPILE% -MT %OBJ% -MD -MP -MF %DEPBASE%.Tpo %-c% -o %OBJ% %SOURCEFLAG%%source-search%%SOURCE% &&\
+	  $(am__mv) %DEPBASE%.Tpo %DEPBASE%.Po)
+	%SILENT%%FASTDEP_DISABLED%$(am__AMDEP_enabled)%source='%SOURCE%' object='%OBJ%' libtool=no \
 	  DEPDIR=$(DEPDIR) $(%FPFX%DEPMODE) $(depcomp) \
 	  %COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
 ## Dependency generation disabled at configure time
-	$(am__AMDEP_disabled)%SILENT%%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
+	%SILENT%$(am__AMDEP_disabled)%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
 else !%AMDEP%
 ## Dependency generation disabled at automake time
 	%SILENT%%COMPILE% %-c% %-oOBJ% %SOURCEFLAG%%source-search%%SOURCE%
