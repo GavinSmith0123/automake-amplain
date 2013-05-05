@@ -33,7 +33,7 @@ endif %?TOPDIR_P%
 ## Combined generation of Makefile in srcdir and copying to builddir
 ## if necessary
 
-AUTOMAKE="$(am__aux_dir)/missing" amplain-1.13
+AUTOMAKE="$(am__aux_dir)/missing" automake-1.13
 
 ## Ensure that GNU make doesn't remove Makefile if ./config.status (below)
 ## is interrupted.  Otherwise, the user would need to know to rerun
