@@ -1274,7 +1274,9 @@ t/yflags-force-override.sh \
 t/yflags-var-expand.sh \
 t/libtool-macros.sh \
 t/gettext-macros.sh \
-t/pkg-config-macros.sh
+t/pkg-config-macros.sh \
+t/plain.sh \
+t/plain-distcheck.sh
 
 print-list-of-tests:
 	@echo $(handwritten_TESTS)

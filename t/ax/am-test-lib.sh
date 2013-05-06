@@ -834,7 +834,11 @@ am_setup_testdir ()
       else
         echo "AM_INIT_AUTOMAKE"
       fi
-      echo "AC_CONFIG_FILES([Makefile])"
+      if test x"$am_output_plain_makefile" = x"yes"; then
+        echo "AC_CONFIG_LINKS([Makefile:Makefile])"
+      else
+        echo "AC_CONFIG_FILES([Makefile])"
+      fi
     } >configure.ac || framework_failure_ "creating configure.ac skeleton"
   fi
 }
