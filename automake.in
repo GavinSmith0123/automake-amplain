@@ -307,9 +307,6 @@ my $copy_missing = 0;
 # TRUE if we should always update files that we know about.
 my $force_missing = 0;
 
-# Generate plain Makefiles
-my $plain = 0;
-
 
 ## ---------------------------------------- ##
 ## Variables filled during files scanning.  ##
@@ -1153,7 +1150,7 @@ sub define_verbose_var ($$;$)
     my $silent_var = $pvar . '_0';
     my $verbose_var = $pvar . '_1';
 
-    if (! $plain) {
+    if (! option 'plain') {
     # For typical 'make's, 'configure' replaces AM_V (inside @@) with $(V)
     # and AM_DEFAULT_V (inside @@) with $(AM_DEFAULT_VERBOSITY).
     # For strict POSIX 2008 'make's, it replaces them with 0 or 1 instead.
@@ -1346,25 +1343,28 @@ sub handle_languages
 	    # seems safest.
 	    $output_rules .= "\n";
 	    foreach my $iter (@deplist)
-	    {
-		$output_rules .= (subst ('AMDEP_TRUE')
+	      {
+	        if (! option 'plain')
+		  {
+		    $output_rules .= (subst ('AMDEP_TRUE')
 				  . subst ('am__include')
 				  . ' '
 				  . subst ('am__quote')
 				  . $iter
 				  . subst ('am__quote')
 				  . "\n")
-		   unless $plain;
-		   
+		  }
+		else
+		  {
 		# If automated dependency tracking is disabled, the
 		# dependency files will be empty, and it does no harm
 		# to include them.
 		# This form of the include directive is incompatible with
 		# some versions of make other than GNU make.
 		$output_rules .= "include $iter\n" .
-                                 $iter . ": config.mk ; \@touch \$\@\n" if $plain;
-
-	    }
+                                 $iter . ": config.mk ; \@touch \$\@\n";
+                  }
+	      }
 
 	    # Compute the set of directories to remove in distclean-depend.
 	    my @depdirs = uniq (map { dirname ($_) } @deplist);
@@ -1399,16 +1399,16 @@ sub handle_languages
 	  (option 'no-dependencies' || $lang->autodep eq 'no')
 	  ? ('FALSE', 'FALSE') : ('AMDEP', "am__fastdep$fpfx");
         
-	# In plain mode, only TRUE or FALSE conditionals are acceptible.
-	# Instead, lines will be disabled using @am__AMDEP_enabled@
-	# and @am__fastdep$fpfx_enabled@
-	($FASTDEP, $AMDEP) = ('TRUE', 'TRUE') if ($plain && $AMDEP eq 'AMDEP');
-
         # The following are used in plain mode when dependency tracking
         # is not disabled at automake time
         my ($fastdep_enabled, $fastdep_disabled) = ('', '');
-        if ($plain && $AMDEP eq 'TRUE')
-         {
+
+	# In plain mode, only TRUE or FALSE conditionals are acceptible.
+	# Instead, lines will be disabled using @am__AMDEP_enabled@
+	# and @am__fastdep$fpfx_enabled@
+	if (option 'plain' && ($AMDEP eq 'AMDEP'))
+	  {
+	    ($FASTDEP, $AMDEP) = ('TRUE', 'TRUE');
 	    $fastdep_enabled = '$(am__fastdep' . $fpfx . '_enabled)'; 
 	    $fastdep_disabled = '$(am__fastdep' . $fpfx . '_disabled)'; 
          }
@@ -2460,8 +2460,14 @@ sub handle_compile ()
     if (! option 'nostdinc')
       {
         my @incs;
-        @incs = ('-I.', subst ('am__isrc')) unless $plain;
-        @incs = ('-I. -I$(srcdir)') if $plain;
+	if (! option 'plain')
+	  {
+            @incs = ('-I.', subst ('am__isrc'));
+	  }
+	else
+	  {
+            @incs = ('-I. -I$(srcdir)');
+	  }
 
 	my $var = var 'CONFIG_HEADER';
 	if ($var)
@@ -2479,7 +2485,8 @@ sub handle_compile ()
 	# Items in CONFIG_HEADER are never in $(srcdir) so it is safe
 	# to just put @am__isrc@ right after '-I.', without a space.
         # Not done in plain mode as we cannot use autoconf output variables
-	($default_includes = ' ' . $default_includes) =~ s/ @/@/ unless $plain;
+	($default_includes = ' ' . $default_includes) =~ s/ @/@/
+	  unless option 'plain';
       }
 
     my (@mostly_rms, @dist_rms);
@@ -4092,7 +4099,7 @@ sub handle_configure ($$$@)
 
   my $automake_options = '--' . $strictness_name .
 			 (global_option 'no-dependencies' ? ' --ignore-deps' : '') .
-			 ($plain ? ' --plain' : '');
+			 (option 'plain' ? ' --plain' : '');
 
   $output_rules .= file_contents
     ('configure',
@@ -4670,7 +4677,7 @@ sub handle_clean ($)
      DISTCLEAN_RMS        => join ('', sort @{$rms{&DIST_CLEAN}}),
      MAINTAINER_CLEAN_RMS => join ('', sort @{$rms{&MAINTAINER_CLEAN}}),
      MAKEFILE             => basename ($makefile),
-     PLAIN                => $plain,
+     PLAIN                => option 'plain',
      );
 }
 
@@ -5153,7 +5160,7 @@ sub scan_autoconf_config_files ($$)
         if ($local =~ /^\.\//);
 
       my $input;
-      if (! $plain)
+      if (! global_option 'plain')
         {
           $input = locate_am @rest;
         }
@@ -5316,8 +5323,11 @@ sub scan_autoconf_traces ($)
 	      $ac_config_files_location{$dest} = $where;
 	      push @config_links, $spec;
 	    }
-	    scan_autoconf_config_files ($where, $args[1])
-              if $plain;
+
+	  if (global_option 'plain')
+	    {
+	      scan_autoconf_config_files ($where, $args[1])
+	    }
 	}
       elsif ($macro eq 'AC_FC_SRCEXT')
 	{
@@ -6270,7 +6280,10 @@ sub define_configure_variable ($)
   # We still define them in Automake::Variable so we can check them with
   # require_variables.
   # These could still be overridden and output anyway.
-  $plain && ($pretty = VAR_SILENT);
+  if (option 'plain')
+    {
+      $pretty = VAR_SILENT;
+    }
 
   Automake::Variable::define ($var, VAR_CONFIGURE, '', TRUE, subst $var,
                              '', $configure_vars{$var}, $pretty);
@@ -6694,7 +6707,7 @@ sub define_standard_variables
 
   my ($comments, undef, $rules);
 
-  if (! $plain)
+  if (! option 'plain')
     {
       ($comments, undef, $rules) =
         file_contents_internal (1, "$libdir/am/header-vars.am",
@@ -7124,8 +7137,15 @@ sub file_contents ($$%)
     my ($basename, $where, %transform) = @_;
     
     # If in plain mode, prefer the use of *.amp Makefile fragments
-    $basename = ($plain && -e "$libdir/am/$basename.amp") ?
-                "$basename.amp" : "$basename.am";
+    if (option 'plain' && -e "$libdir/am/$basename.amp")
+      {
+        $basename = "$basename.amp";
+      }
+    else
+      {
+        $basename = "$basename.am";
+      }
+
     my ($comments, $variables, $rules) =
       file_contents_internal (1, "$libdir/am/$basename", $where,
 			      %transform);
@@ -8030,7 +8050,7 @@ sub generate_makefile ($$)
   handle_clean ($makefile);
   handle_factored_dependencies;
 
-  if ($plain)
+  if (global_option 'plain')
     {
       # Precede list of variables with "config.mk" include
 
@@ -8242,6 +8262,7 @@ sub parse_arguments ()
 {
   my $strict = 'gnu';
   my $ignore_deps = 0;
+  my $plain = 0;
   my @warnings = ();
 
   my %cli_options =
@@ -8270,6 +8291,7 @@ sub parse_arguments ()
   set_strictness ($strict);
   my $cli_where = new Automake::Location;
   set_global_option ('no-dependencies', $cli_where) if $ignore_deps;
+  set_global_option ('plain', $plain);
   for my $warning (@warnings)
     {
       &parse_warnings ('-W', $warning);
@@ -8287,7 +8309,7 @@ sub parse_arguments ()
       my ($local, @rest) = split (/:/, $arg);
 
       my $input;
-      if (! $plain)
+      if (! global_option 'plain')
         {
           @rest = ("$local.in",) unless @rest;
           $input = locate_am @rest;
