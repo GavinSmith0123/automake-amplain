@@ -6131,6 +6131,11 @@ sub cond_stack_if ($$$)
 
   if (! $configure_cond{$cond} && $cond !~ /^TRUE|FALSE$/)
     {
+      if (option 'plain')
+        {
+	  error $where, "Use of automake conditional '$cond' not " .
+	                'supported with --plain';
+        }
       my $text = "$cond does not appear in AM_CONDITIONAL";
       my $scope = US_LOCAL;
       if (exists $_am_macro_for_cond{$cond})
