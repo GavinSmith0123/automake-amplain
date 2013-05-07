@@ -1276,7 +1276,8 @@ t/libtool-macros.sh \
 t/gettext-macros.sh \
 t/pkg-config-macros.sh \
 t/plain.sh \
-t/plain-distcheck.sh
+t/plain-distcheck.sh \
+t/plain-vpath-distcheck.sh
 
 print-list-of-tests:
 	@echo $(handwritten_TESTS)
